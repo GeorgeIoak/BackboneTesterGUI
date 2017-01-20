@@ -43,6 +43,7 @@ class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow):
 
     def pressedbtnShort(self):
         print ("Pressed Short Button!")
+        self.brd1A.setStyleSheet("background-color:green;")
 
     def __init__(self):
         super(self.__class__, self).__init__()
