@@ -2,6 +2,10 @@
 # by James Lewis (@baldengineer)
 # Minimal python code to start PyQt5 GUI
 #
+# If you make changes to the Qt form then
+# pyuic5 mainwindow.ui > mainwindow_auto.py
+#
+# To run, python3 main.py
 
 # always seem to need this
 import sys
@@ -20,6 +24,7 @@ class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow):
     ### functions for the buttons to call
     def pressedbtnGo(self):
         print ("Pressed Start Button!")
+        self.brd1A.setStyleSheet("background-color:green;")
 
     def pressedbtnShort(self):
         print ("Pressed Short Button!")
