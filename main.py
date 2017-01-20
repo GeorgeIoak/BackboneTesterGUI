@@ -14,6 +14,15 @@ import sys
 import PyQt5
 from PyQt5.QtWidgets import *
 
+# GPIO Related
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BCM) #Use actual Broadcom GPIO numbering
+
+GPIO.setup(27, GPIO.IN) #Over Current (OC) from Tester
+GPIO.setup(17, GPIO.OUT) #TPS2149 Enable (EN1, default high) to Tester
+GPIO.setup(04, GPIO.OUT, pull_up_down=GPIO.PUD_UP) #Program Start (Ctrl) to Tester
+GPIO.setup(08, GPIO.IN) #Motor PWM Signal (PWM) from Tester
+
 # This is our window from QtCreator
 import mainwindow_auto
 
@@ -44,6 +53,7 @@ def main():
     form = MainWindow()
     form.show()
     # without this, the script exits immediately.
+    GPIO.cleanup() #  Release GPIOs
     sys.exit(app.exec_())
 
 # python bit to figure how who started This
