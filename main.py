@@ -26,7 +26,7 @@ GPIO.setmode(GPIO.BCM) #Use actual Broadcom GPIO numbering
 
 GPIO.setup(27, GPIO.IN) #Over Current (OC) from Tester
 GPIO.setup(17, GPIO.OUT) #TPS2149 Enable (EN1, default high) to Tester
-GPIO.setup(4, GPIO.OUT, pull_up_down=GPIO.PUD_UP) #Program Start (Ctrl) to Tester
+GPIO.setup(4, GPIO.OUT) #Program Start (Ctrl) to Tester
 GPIO.setup(8, GPIO.IN) #Motor PWM Signal (PWM) from Tester
 
 # This is our window from QtCreator
