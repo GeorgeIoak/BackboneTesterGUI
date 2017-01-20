@@ -1,11 +1,17 @@
+# Code based on
 # From https://www.baldengineer.com/raspberry-pi-gui-tutorial.html 
 # by James Lewis (@baldengineer)
-# Minimal python code to start PyQt5 GUI
+# 
+# Backbone Tester Operator Interface
 #
 # If you make changes to the Qt form then
 # pyuic5 mainwindow.ui > mainwindow_auto.py
 #
 # To run, python3 main.py
+#
+# nano /home/pi/.config/lxsession/LXDE-pi/autostart
+# And add this line:
+# @/usr/bin/python3 /home/pi/main.py
 
 # always seem to need this
 import sys
