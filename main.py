@@ -19,12 +19,13 @@ import sys
 # This gets the Qt stuff
 import PyQt5
 from PyQt5.QtWidgets import *
-
-# GPIO Related
 import RPi.GPIO as GPIO
-GPIO.setmode(GPIO.BCM) #Use actual Broadcom GPIO numbering
 
-GPIO.setup(27, GPIO.IN) #Over Current (OC) from Tester
+# GPIO Setup
+GPIO.setmode(GPIO.BCM) #Use actual Broadcom GPIO numbering
+GPIO.setwarnings(False) #Disables the Warning
+
+GPIO.setup(27, GPIO.IN) #Over Current (OC, default high) from Tester
 GPIO.setup(17, GPIO.OUT) #TPS2149 Enable (EN1, default high) to Tester
 GPIO.setup(4, GPIO.OUT) #Program Start (Ctrl) to Tester
 GPIO.setup(8, GPIO.IN) #Motor PWM Signal (PWM) from Tester
@@ -39,10 +40,16 @@ class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow):
     ### functions for the buttons to call
     def pressedbtnGo(self):
         print ("Pressed Start Button!")
+        GPIO.setmode(GPIO.BCM) #Use actual Broadcom GPIO numbering
+        GPIO.setup(17, GPIO.OUT) #TPS2149 Enable (EN1, default high) to Tester
+        GPIO.output(17, 1)
         self.brd1A.setStyleSheet("background-color:green;")
 
     def pressedbtnShort(self):
         print ("Pressed Short Button!")
+        GPIO.setmode(GPIO.BCM) #Use actual Broadcom GPIO numbering
+        GPIO.setup(17, GPIO.OUT) #TPS2149 Enable (EN1, default high) to Tester
+        GPIO.output(17, 0)
         self.brd1A.setStyleSheet("background-color:red;")
 
     def __init__(self):
