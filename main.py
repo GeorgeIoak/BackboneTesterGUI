@@ -15,11 +15,25 @@
 
 # always seem to need this
 import sys
+import time
+import serial
 
 # This gets the Qt stuff
 import PyQt5
 from PyQt5.QtWidgets import *
+from PyQt5 import QtGui, uic, QtCore
 import RPi.GPIO as GPIO
+
+# Serial port Config
+port = "/dev/ttyACM0"
+baud = 115200
+ 
+ser = serial.Serial(port, baud, timeout=1)
+    # open the serial port
+if ser.isOpen():
+     print(ser.name + ' is open...')
+cmd = "G91 G0 X10" # For testing icremental move
+motorOff = "M84" # This disables the motors so the power suppply fan will stop
 
 # GPIO Setup
 GPIO.setmode(GPIO.BCM) #Use actual Broadcom GPIO numbering
@@ -38,11 +52,20 @@ class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow):
     # access variables inside of the UI's file
 
     ### functions for the buttons to call
+    def __init__(self):
+        super(self.__class__, self).__init__()
+        self.setupUi(self) # gets defined in the UI file
+
+        ### Hooks to for buttons
+        self.btnGo.clicked.connect(lambda: self.pressedbtnGo())
+        self.btnShort.clicked.connect(lambda: self.pressedbtnShort())
+        
     def pressedbtnGo(self):
         print ("Pressed Start Button!")
         GPIO.setmode(GPIO.BCM) #Use actual Broadcom GPIO numbering
         GPIO.setup(17, GPIO.OUT) #TPS2149 Enable (EN1, default high) to Tester
         GPIO.output(17, 1)
+        ser.write(cmd.encode('UTF-8')+b'\r\n')
         self.brd1A.setStyleSheet("background-color:green;")
 
     def pressedbtnShort(self):
@@ -51,14 +74,15 @@ class MainWindow(QMainWindow, mainwindow_auto.Ui_MainWindow):
         GPIO.setup(17, GPIO.OUT) #TPS2149 Enable (EN1, default high) to Tester
         GPIO.output(17, 0)
         self.brd1A.setStyleSheet("background-color:red;")
+        
+    def closeEvent(self, event): # GPIO cleanup upon closing the GUI by terminal
+        print ("GPIO CleanUP")
+        GPIO.cleanup()
+        ser.write(motorOff.encode('UTF-8')+b'\r\n')
+        ser.close() 
+        event.accept()
 
-    def __init__(self):
-        super(self.__class__, self).__init__()
-        self.setupUi(self) # gets defined in the UI file
-
-        ### Hooks to for buttons
-        self.btnGo.clicked.connect(lambda: self.pressedbtnGo())
-        self.btnShort.clicked.connect(lambda: self.pressedbtnShort())
+    
 
 # I feel better having one of these
 def main():
